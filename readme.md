@@ -2,6 +2,8 @@
 
 In an emergency, it may be possible to support 2-4 patients from a single ventilator (Fig. 1.) [1-2]. However, this reduces the per-patient information feedback to the practitioners [3-4]. The proposed arrangement (Fig. 2.) seeks to allow per-patient information to be gained in a rapidly deployable way.
 
+*Figure 1. Emergency shared ventilator arrangement, plan view. Air return omitted. Based on [1-2].  *
+![Figure 1](https://github.com/4c656554/SharedVentMon/blob/master/SharedVentPlan.png)
 
 
 
