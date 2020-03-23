@@ -5,12 +5,18 @@ In an emergency, it may be possible to support 2-4 patients from a single ventil
 *Figure 1. Emergency shared ventilator arrangement, plan view. Air return omitted. Based on [1-2].*
 ![Figure 1](https://github.com/4c656554/SharedVentMon/blob/master/SharedVentPlan.png)
 
+# Proposal
+
 This project is seeking to provide information to practitioners in the case of emergency shared ventilator use, through the used of image tracking of existing medical meter devices. See Figure 2.
 
 
 *Figure 2.  Proposed phone/tablet and flow/pressure monitoring arrangement.*
 ![Figure 2](https://github.com/4c656554/SharedVentMon/blob/master/Fig2.png)
 
+
+#  Proof of Concept
+
+See tracker.html
 
 
 
