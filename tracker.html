@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>graphing a flow meter reading with tracking.js and plotly</title>
+
+  <style>
+        #plot {position: absolute; width: 80%; height: 80%; left:20%;top; 50 px; opacity: 1; background-color: white;}
+        #stats {display: none;top:800px !important;}
+        .dg {display: none;}
+
+  </style>
+  <script src="tracker/tracking.js"></script>
+  <script src="tracker/dat.gui.min.js"></script>
+    <script src="tracker/stats.min.js"></script>
+    <script src="tracker/color_camera_gui.js"></script>
+    <script src='tracker/plotly.min.js'></script>
+
+  <style>
+  .demo-container {
+    background-color: black;
+  }
+
+  video, canvas {
+    position: absolute;
+  }
+  </style>
+</head>
+<body>
+  <div class="demo-title">
+    <p><h2>SharedVentMon - graphing a flow meter reading using tracking.js and plotly.</h2> By Lee Thomas @4c6565, <a href="https://github.com/4c656554/SharedVentMon">https://github.com/4c656554/SharedVentMon</p></a>
+  </div>
+
+  <div class="demo-frame">
+    <div class="demo-container">
+      <div id="rectangle"></div>
+      <video id="video" width="800" height="530" preload autoplay loop muted controls>
+        <source src="flowm.mp4" type="video/mp4">
+
+      </video>
+      <canvas id="canvas" width="800" height="500"></canvas>
+
+    </div>
+    video src: <a href='https://www.youtube.com/watch?v=m7SaQoM9erg'>https://www.youtube.com/watch?v=m7SaQoM9erg</a>
+  </div>
+
+  <div id='plot'>
+
+  </div>
+
+  <script>
+    window.onload = function() {
+      var canvas = document.getElementById('canvas');
+      var context = canvas.getContext('2d');
+
+      tracking.ColorTracker.registerColor('ballCol', function(r, g, b) { //68 65 /69
+
+        if (r>0 && r< 90 && g > 0 && g < 90 && b>0 && b<90) {
+          return true;
+        }
+        return false;
+      });
+
+      var tracker = new tracking.ColorTracker(['ballCol']);
+      tracker.setMinDimension(6);
+tracker.setMaxDimension(20);
+      tracking.track('#video', tracker);
+
+
+      var trace1 = {
+        y: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        mode: 'markers',
+        marker: {
+          size: 10,
+          color: []
+        }
+      };
+      let data;
+
+
+      var layout = {
+        title: 'Approximate flow indication [l/m]'
+      };
+
+
+
+
+
+      tracker.on('track', function(event) {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        event.data.forEach(function(rect) {
+          if (rect.color === 'custom') {
+            rect.color = tracker.customColor;
+          }
+
+          context.strokeStyle = rect.color;
+          context.strokeRect(rect.x, rect.y, rect.width, rect.height);
+          context.font = '11px Helvetica';
+          context.fillStyle = "#fff";
+          context.fillText('x: ' + rect.x + 'px', rect.x + rect.width + 5, rect.y + 11);
+          context.fillText('y: ' + rect.y + 'px', rect.x + rect.width + 5, rect.y + 22);
+
+          if (rect.x > 205 && rect.x <221 && rect.y < 280 && rect.y >185){
+
+            if (trace1.y.length > 200){
+              trace1.y.shift()
+            }
+            trace1.y.push((rect.y-280)*-15/230)
+data = [trace1];
+  Plotly.newPlot('plot', data, layout);
+          }
+        });
+      });
+
+      initGUIControllers(tracker);
+    };
+  </script>
+
+</body>
+</html>
